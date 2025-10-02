@@ -1,0 +1,50 @@
+.whyus-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.whyus-arrow {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #b1b1b1;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0 12px;
+  user-select: none;
+}
+.whyus-arrow:hover {
+  color: #029491;
+}
+
+.whyus-cards {
+  display: flex;
+  gap: 24px;
+}
+
+.whyus-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 24px 20px;
+  min-width: 260px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+}
+
+.whyus-card__icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 16px;
+}
+
+.whyus-card__text {
+  font-size: 15px;
+  color: #222;
+}

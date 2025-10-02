@@ -1,0 +1,8 @@
+.main {
+    width: 1320px;
+    margin: auto;
+    padding: 24px 60px  118px 60px ;
+}
+.hero {
+    display: flex;
+}

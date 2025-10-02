@@ -1,0 +1,80 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 60px 0px 60px;
+  background: #FFFFFF;
+  width: 1320px;
+  margin: auto;
+}
+.header__logo a {
+  font-weight: bold;
+  font-size: 24px;
+  text-decoration: none;
+  color: #333;
+}
+.header__nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+}
+.header__auth a {
+  margin-left: 10px;
+  text-decoration: none;
+  color: #007bff;
+}
+.header__login-btn:hover,
+.header__register-btn:hover {
+  text-decoration: underline;
+  
+}
+.header__register-btn {
+  color: #000000;
+  text-decoration: none;
+}
+.header__login-btn {
+  display: flex;
+  color: #000000;
+  background-color: #7CE3E1;
+  width: 65px;
+  height: 26px;
+  border-radius: 5px;
+  justify-content: center;
+  text-decoration: none;
+}
+.header__profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header__profile-name {
+  font-size: 15px;
+  color: #000;
+  margin-right: 4px;
+}
+.header__profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.header__logout-btn {
+  background: none;
+  border: none;
+  color: #b1b1b1;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: color 0.2s;
+}
+.header__logout-btn:hover {
+  color: #029491;
+}
+.header__loader {
+  color: #b1b1b1;
+  font-size: 13px;
+}
+.header__right {
+  display: flex;
+  gap: 18px;
+}

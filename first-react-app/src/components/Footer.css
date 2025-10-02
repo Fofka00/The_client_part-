@@ -1,0 +1,26 @@
+.footer {
+  display: flex;
+  padding: 16px;
+  background: #029491;
+  color: #FFFFFF;
+  margin: auto;
+}
+.footerContainer {
+  margin: auto;
+  display: flex;
+  width: 1320px;
+  justify-content: space-between;
+}
+.footerInfo a {
+  color: white;
+  text-decoration: none;
+
+}
+.footerInfo {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 210px;
+  text-align: end;
+  align-items: center;
+  justify-content: end;
+}

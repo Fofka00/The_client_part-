@@ -1,0 +1,156 @@
+.tariffs-list {
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.tariff-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+}
+
+.tariff-card--current {
+  border-color: #7CE3E1;
+}
+
+.tariff-card__header {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding: 10px 15px 30px 30px;
+  color: #000;
+  position: relative;
+  min-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  max-width: 415px;
+  align-items: center;
+}
+
+.tariff-card__name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.tariff-card__desc {
+  font-size: 14px;
+  color: #555;
+}
+
+.tariff-card__badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #7CE3E1;
+  color: #000;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+.tariff-card__body {
+  padding: 16px 20px;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 345px;
+  align-items: baseline;
+}
+
+.tariff-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+}
+
+.tariff-card__price-new {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+}
+
+.tariff-card__price-old {
+  font-size: 16px;
+  color: #C7C7C7;
+  text-decoration: line-through;
+}
+
+.tariff-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #000;
+  font-size: 14px;
+}
+
+.tariff-card__features li {
+  margin-bottom: 6px;
+}
+
+.tariff-card__footer {
+  padding: 16px 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.tariff-card__btn {
+  background: #5970FF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.tariff-card__btn:hover {
+  background: #4252c5;
+}
+
+.tariff-card__btn--current {
+  background: #D2D2D2;
+  color: #000;
+  cursor: default;
+}
+
+.tariff-card--current .tariff-card__header {
+  color: #fff;
+}
+
+.tariff-card--current .tariff-card__badge {
+  background: #fff;
+  color: #000;
+  border: 1px solid #7CE3E1;
+}
+.tariff-card--light .tariff-card__name,
+.tariff-card--light .tariff-card__desc,
+.tariff-card--light .tariff-card__allTarrifs {
+  color: #fff;
+}
+.tariff-card--light .tariff-card__allTarrifs{
+
+    color: black;
+}
+.tariff-card__andPrise {
+    margin-bottom: 50px;
+}
+.tariff-card__andPrise span {
+    font-size: 18px;
+    font-weight: 400;
+}
+.tariff-card__allTarrifs {
+    width: 150px;
+}
+
