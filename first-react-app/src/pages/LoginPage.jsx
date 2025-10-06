@@ -15,33 +15,30 @@ function LoginPage({ onLogin }) {
 
   const isValid = login.trim() && password.trim();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    try {
-      const response = await fetch('https://api.example.com/account/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ login, password }),
-      });
-      const data = await response.json();
+  // Моковые данные для теста
+    const validLogin = 'test';
+    const validPassword = '1234';
 
-      if (response.ok && data.accessToken) {
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('expire', data.expire);
-        onLogin(data);
-        navigate('/');
-      } else {
-        setError(data.message || 'Ошибка авторизации');
-      }
-    } catch {
-      setError('Ошибка сети');
-    } finally {
-      setLoading(false);
+  setTimeout(() => {
+    if (login === validLogin && password === validPassword) {
+      // Сохраняем фейковый токен и срок действия
+      const fakeToken = '1234567890';
+      const fakeExpire = new Date(Date.now() + 3600 * 1000).toISOString();
+      localStorage.setItem('accessToken', fakeToken);
+      localStorage.setItem('expire', fakeExpire);
+      onLogin({ name: 'Avatar', currentTariff: 'beginner', avatar: '/avatar.jpg' });
+      navigate('/');
+    } else {
+      setError('Неправильное имя или пароль');
     }
-  };
+    setLoading(false);
+  }, 700);
+};
   
   return (
     <>

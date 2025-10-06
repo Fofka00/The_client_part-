@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import Logo from '../Img/SGN_09_24_2022_1663968217400 1.svg';
 import Rect from '../Img/Rectangle 7.svg';
+import useravatar from '../Img/Mask group (3).svg';
 
 function Header({ user, limits, loadingLimits, onLogout }) {
   return (
@@ -33,9 +34,13 @@ function Header({ user, limits, loadingLimits, onLogout }) {
               )}
             </div>
             <div className="header__profile">
-              <span className="header__profile-name">{user.name}</span>
-              <button className="header__logout-btn" onClick={onLogout}>Выйти</button>
-              <img src={user.avatar} alt={user.name} className="header__profile-avatar" />
+              <div className="header__profile User">
+                <span className="header__profile-name">{user.name}</span>
+                <button className="header__logout-btn" onClick={onLogout}>Выйти</button>
+              </div>
+              <div>
+                <img src={useravatar} alt={user.name} className="header__profile-avatar" />
+              </div>
             </div>
           </>
         ) : (

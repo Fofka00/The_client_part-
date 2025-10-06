@@ -2,7 +2,23 @@
     width: 1320px;
     margin: auto;
     padding: 24px 60px  118px 60px ;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 100px;
 }
 .hero {
     display: flex;
+}
+.hero__button {
+    background-color: #5970FF;
+    color: white;
+    width: 335px;
+    height: 59px;
+    border: 0;
+    border-radius: 5px;
+    margin-top: 60px;
+}
+.why-us h2{
+    font-size: 45px;
+    font-weight: 900;
 }

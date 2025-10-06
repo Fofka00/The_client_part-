@@ -78,9 +78,9 @@ function Tariffs({ user }) {
                 </div>
 
               {isCurrent && (
-                <span className="tariff-card__badge" style={{ background: tariff.badgeColor }}>
+                <p className="tariff-card__badge" style={{ background: tariff.badgeColor }}>
                   Текущий тариф
-                </span>
+                </p>
               )}
             </div>
             <div className="tariff-card__body">
