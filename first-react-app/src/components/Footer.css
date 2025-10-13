@@ -24,3 +24,42 @@
   align-items: center;
   justify-content: end;
 }
+
+@media (max-width: 400px) {
+  .footer {
+  width: 347px;
+  padding: 14px;
+  }
+  .footerContainer {
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+    margin: 0;
+  }
+  .footerContainer > div:first-child {
+    margin-right: 12px;
+  }
+  .footerInfo {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    text-align: right;
+    max-width: 70vw;
+    font-size: 13px;
+    gap: 0;
+  }
+  .footerInfo a {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 2px;
+    color: #fff;
+    text-decoration: none;
+  }
+  .footerInfo > div:last-child {
+    margin-top: 8px;
+  }
+}
+

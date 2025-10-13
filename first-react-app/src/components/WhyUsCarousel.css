@@ -48,3 +48,39 @@
   font-size: 15px;
   color: #222;
 }
+
+@media (max-width: 400px) {
+  .whyus-carousel {
+    width: 347px;
+    gap: 0;
+    margin: 20px 0;
+  }
+
+  .whyus-card__icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 12px;
+  }
+  .whyus-arrow {
+    font-size: 28px;
+    width: 32px;
+    height: 32px;
+    padding: 0 4px;
+  }
+
+  .whyus-cards {
+    width: 347px;
+    gap: 0;
+    justify-content: center;
+  }
+  .whyus-card {
+    min-width: 0;
+    max-width: 90vw;
+    width: 100%;
+    padding: 16px 8px;
+    align-items: flex-start;
+    font-size: 13px;
+    height: 100px;
+  }
+
+}

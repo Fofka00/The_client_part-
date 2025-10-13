@@ -125,9 +125,6 @@
   cursor: default;
 }
 
-.tariff-card--current .tariff-card__header {
-  color: #fff;
-}
 
 
 .tariff-card--light .tariff-card__name,
@@ -150,3 +147,9 @@
     width: 150px;
 }
 
+@media (max-width: 400px) {
+  .tariffs{
+    width: 347px; 
+  }
+}
+  

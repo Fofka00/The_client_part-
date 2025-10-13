@@ -6,17 +6,14 @@ import Tariffs from '../components/Tariffs';
 import '../components/HomePage.css';
 import Ilustration from '../Img/Group 13.svg'
 import Ilustration1 from '../Img/Group 14.svg'
-import tarifsImg from '../Img/Group 1171274214.svg'
-import tarifsImg1 from '../Img/Group 1171274215.svg'
-import tarifsImg2 from '../Img/Group 1171274216.svg'
 
-function HomePage({ user, handleLogout }) {
+function HomePage({ user, handleLogout, limits, loadingLimits }) {
   return (
     <>
-      <Header user={user} onLogout={handleLogout} />
+      <Header user={user} onLogout={handleLogout} limits={limits} loadingLimits={loadingLimits} />
       <main className="main">
         <section className="hero">
-          <div className="hero__content" style={{width: "740px"}}>
+          <div className="hero__content">
             <h1 style={{fontSize: "55px", fontWeight: "1000", maxWidth: ""}}>СЕРВИС ПО ПОИСКУ <br /> ПУБЛИКАЦИЙ <br /> О КОМПАНИИ <br /> ПО ЕГО ИНН</h1>
             <p style={{fontSize: "20px", fontWeight: "400"}}>Комплексный анализ публикаций, получение данных <br /> в формате PDF на электронную почту.</p>
             {user && (

@@ -15,29 +15,29 @@ function LoginPage({ onLogin }) {
 
   const isValid = login.trim() && password.trim();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-  // Моковые данные для теста
-    const validLogin = 'test';
-    const validPassword = '1234';
-
-  setTimeout(() => {
-    if (login === validLogin && password === validPassword) {
-      // Сохраняем фейковый токен и срок действия
-      const fakeToken = '1234567890';
-      const fakeExpire = new Date(Date.now() + 3600 * 1000).toISOString();
-      localStorage.setItem('accessToken', fakeToken);
-      localStorage.setItem('expire', fakeExpire);
-      onLogin({ name: 'Avatar', currentTariff: 'beginner', avatar: '/avatar.jpg' });
-      navigate('/');
-    } else {
-      setError('Неправильное имя или пароль');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  try {
+    const response = await fetch('http://localhost:3001/account/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ login, password }),
+    });
+    if (!response.ok) throw new Error('Ошибка входа');
+    const data = await response.json();
+    if (data.accessToken) {
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('expire', data.expire);
     }
+    onLogin(data.user);
+    navigate('/');
+  } catch (err) {
+    setError(err.message);
+  } finally {
     setLoading(false);
-  }, 700);
+  }
 };
   
   return (
@@ -46,7 +46,7 @@ function LoginPage({ onLogin }) {
     <div className="login-root">
       <div className="login-left">
         <h1>ДЛЯ ОФОРМЛЕНИЯ ПОДПИСКИ<br />НА ТАРИФ, НЕОБХОДИМО<br />АВТОРИЗОВАТЬСЯ.</h1>
-        <img src={KeyImg} alt="" className="login-illustration" />
+        <img src={KeyImg} alt="" className="login-illustration desktop-only" />
       </div>
       <div className="login-right">
         <div className="login-lock">
@@ -89,6 +89,7 @@ function LoginPage({ onLogin }) {
             </div>
           </div>
         </form>
+        <img src={KeyImg} alt="" className="login-illustration mobile-only" />
       </div>
     </div>
       <Footer />

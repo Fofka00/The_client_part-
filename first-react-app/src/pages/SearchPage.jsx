@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
 import RocketImg from '../Img/Group 1171274244.svg';
 import Folder from '../Img/Folders.svg';
 import Document from '../Img/Document.svg';
 import Header from '../components/Header';
 import Footer from '../components/Footer'; 
 import './SearchPage.css'
-import SummaryCarousel from '../components/SummaryCarousel';
-// Простая валидация ИНН (10 или 12 цифр)
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 function validateInn(inn) {
   return /^\d{10}$|^\d{12}$/.test(inn);
 }
@@ -15,8 +15,8 @@ function isFuture(date) {
   return new Date(date) > new Date();
 }
 
-function SearchPage({ user, loading, onLogout }) {
-
+function SearchPage({ user, loading, onLogout, limits, loadingLimits }) {
+  const navigate = useNavigate();
   const [inn, setInn] = useState('');
   const [maxFullness, setMaxFullness] = useState(false);
   const [inBusinessNews, setInBusinessNews] = useState(false);
@@ -33,18 +33,19 @@ function SearchPage({ user, loading, onLogout }) {
   const [summary, setSummary] = useState(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
 
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/');
+    }
+  }, [user, loading, navigate]);
+
   if (loading) {
     return <div>Загрузка...</div>;
   }
-  if (!user) {
-    window.location.href = '/';
-    return null;
-  }
 
 
 
 
-  // Валидация
   const validate = () => {
     const newErrors = {};
     if (!validateInn(inn)) newErrors.inn = 'Введите корректный ИНН (10 или 12 цифр)';
@@ -66,7 +67,6 @@ function SearchPage({ user, loading, onLogout }) {
       setLoadingSummary(true);
       setSummary(null);
       try {
-        // Пример тела запроса, подстрой под свой API
         const body = {
           inn,
           maxFullness,
@@ -85,10 +85,12 @@ function SearchPage({ user, loading, onLogout }) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
+          
         });
         if (!response.ok) throw new Error('Ошибка запроса');
         const data = await response.json();
-        setSummary(data); // data должен быть в формате, который ждёт SummaryCarousel
+        setSummary(data);
+        navigate('/summary', { state: { summary: data, searchParams: body } });
       } catch (err) {
         alert('Ошибка при поиске: ' + err.message);
       } finally {
@@ -102,7 +104,7 @@ function SearchPage({ user, loading, onLogout }) {
 
   return (
     <>
-      <Header user={user} onLogout={onLogout} />
+      <Header user={user} onLogout={onLogout} limits={limits} loadingLimits={loadingLimits} />
       <div className="search-page">
         <div>
             <h1 className="search-title">НАЙДИТЕ НЕОБХОДИМЫЕ<br />ДАННЫЕ В ПАРУ КЛИКОВ.</h1>
@@ -111,14 +113,14 @@ function SearchPage({ user, loading, onLogout }) {
               Чем больше заполните, тем точнее поиск
             </p>
             {loadingSummary && <div>Загрузка сводки...</div>}
-            {summary && <SummaryCarousel summary={summary} />}
             <div className="search-main">
               <form className="search-form" onSubmit={handleSubmit}>
                 <div className="search-form__columns">
                   <div className="search-form__left">
                     <label>
                       <p>ИНН компании*</p>
-                      <input type="text" placeholder="10 цифр" value={inn} onChange={e => setInn(e.target.value)} />
+                      <input type="text" placeholder="10 цифр" value={inn} onChange={e => setInn(e.target.value)} className={errors.inn ? 'input-error' : ''} />
+                      {errors.inn && <div className="error-text">{errors.inn}</div>}
                     </label>
                     <label>
                       <p>Тональность</p>
@@ -126,7 +128,6 @@ function SearchPage({ user, loading, onLogout }) {
                         <option>Любая</option>
                         <option>Позитивная</option>
                         <option>Негативная</option>
-                        {/* ... */}
                       </select>
                     </label>
                     <label>
@@ -136,9 +137,10 @@ function SearchPage({ user, loading, onLogout }) {
                     <label>
                       <p>Диапазон поиска*</p>
                       <div className="date-range">
-                        <input type="date" placeholder="Дата начала"   value={dateStart} onChange={e => setDateStart(e.target.value)} />
-                        <input type="date" placeholder="Дата конца"   value={dateEnd} onChange={e => setDateEnd(e.target.value)} />
+                        <input type="date" value={dateStart} onChange={e => setDateStart(e.target.value)} className={errors.dateStart ? 'input-error' : ''} />
+                        <input type="date" value={dateEnd} onChange={e => setDateEnd(e.target.value)} className={errors.dateStart ? 'input-error' : ''} />
                       </div>
+                      {errors.dateStart && <div className="error-text">{errors.dateStart}</div>}
                     </label>
                   </div>
                   <div className="search-form__right">
@@ -180,7 +182,7 @@ function SearchPage({ user, loading, onLogout }) {
                       Включать сводки новостей
                     </label>
                     <div className="search-btnContainer">
-                        <button type="submit" className="search-btn" disabled={!isValid}>
+                        <button type="submit" className="search-btn">
                           Поиск
                         </button>
                     </div>
