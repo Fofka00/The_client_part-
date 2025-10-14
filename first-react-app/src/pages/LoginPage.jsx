@@ -25,7 +25,17 @@ const handleSubmit = async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login, password }),
     });
-    if (!response.ok) throw new Error('Ошибка входа');
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        setError('Неверный логин или пароль');
+      } else {
+        setError('Ошибка авторизации');
+      }
+      setLoading(false);
+      return;
+    }
+
     const data = await response.json();
     if (data.accessToken) {
       localStorage.setItem('accessToken', data.accessToken);
@@ -34,7 +44,7 @@ const handleSubmit = async (e) => {
     onLogin(data.user);
     navigate('/');
   } catch (err) {
-    setError(err.message);
+    setError('Сервер недоступен, попробуйте позже');
   } finally {
     setLoading(false);
   }

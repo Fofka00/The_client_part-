@@ -67,7 +67,7 @@ app.post('/objectsearch', (req, res) => {
 app.post('/account/login', (req, res) => {
   console.log('LOGIN BODY:', req.body); 
   const { login, password } = req.body;
-  if (login === 'test' && password === '1234') {
+  if (login === 'myDiploma' && password === 'willSucceed4Sure') {
     res.json({
       accessToken: 'mock-token',
       expire: new Date(Date.now() + 3600 * 1000).toISOString(),
