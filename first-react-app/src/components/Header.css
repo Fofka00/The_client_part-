@@ -152,8 +152,7 @@
     position: static;
     margin: 0 12px 0 0;
     width: 130px;
-    height: 48px;
-    font-size: 9px;
+    height: 63px;
     padding: 6px 8px;
     display: flex;
     flex-direction: column;
@@ -164,7 +163,7 @@
   }
   .header__limits-used b,
   .header__limits-green {
-    font-size: 16px;
+    font-size: 14px;
     margin-left: 0;
   }
   .header__burger {
@@ -251,5 +250,10 @@
     font-size: 18px;
     text-decoration: none;
     font-weight: 600;
+  }
+  .header__limits-total{
+    display: flex;
+    flex-wrap: wrap;
+    width: 120px;
   }
 }
