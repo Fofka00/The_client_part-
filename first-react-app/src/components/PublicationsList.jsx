@@ -13,33 +13,20 @@ function PublicationsList({ publicationIds }) {
   useEffect(() => {
     setPublications([]);
     setCurrentPage(1);
-  }, [publicationIds]);
-
-  useEffect(() => {
-    const fetchFirstPage = async () => {
-      setLoading(true);
-      const idsToLoad = publicationIds.slice(0, PAGE_SIZE);
-      try {
-        const response = await fetch('http://localhost:3001/documents', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ids: idsToLoad }),
-        });
-        const data = await response.json();
-        setPublications(data);
-        setCurrentPage(1);
-      } catch (err) {
-        alert('Ошибка: ' + err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (publicationIds.length > 0) {
+      const fetchFirstPage = async () => {
+        setLoading(true);
+        const idsToLoad = publicationIds.slice(0, PAGE_SIZE);
+        try {
+          const data = await getPublications({ ids: idsToLoad });
+          setPublications(data); // <-- только set, не добавление!
+        } catch (err) {
+          alert('Ошибка: ' + err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
       fetchFirstPage();
-    } else {
-      setPublications([]);
-      setCurrentPage(1);
     }
   }, [publicationIds]);
 
@@ -54,7 +41,7 @@ function PublicationsList({ publicationIds }) {
       }
       try {
         const data = await getPublications({ ids: idsToLoad });
-        setPublications(data);
+        setPublications(prev => [...prev, ...data]); // <-- добавление!
       } catch (err) {
         alert('Ошибка: ' + err.message);
       } finally {
@@ -68,22 +55,20 @@ function PublicationsList({ publicationIds }) {
     setCurrentPage(prev => prev + 1);
   };
 
-  const isShowMoreDisabled = publications.length >= 10;
-
   return (
     <div className="publications-list">
-    <div className="publications-list__cards">
-      {publications.filter(Boolean).map(pub => (
-        <PublicationCard key={pub.id} publication={pub} />
-      ))}
+      <div className="publications-list__cards">
+        {publications.filter(Boolean).map(pub => (
+          <PublicationCard key={pub.id} publication={pub} />
+        ))}
+      </div>
+      {loading && <div>Загружаем публикации...</div>}
+      {publications.length < 10 && !loading && (
+        <button onClick={handleShowMore} className="show-more-btn">
+          Показать больше
+        </button>
+      )}
     </div>
-    {loading && <div>Загружаем публикации...</div>}
-    {publications.length < 10 && !loading && (
-      <button onClick={handleShowMore} className="show-more-btn">
-      Показать больше
-      </button>
-    )}
-  </div>
   );
 }
 

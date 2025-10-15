@@ -5,7 +5,6 @@ function PublicationCard({ publication }) {
   if (!publication) return null;
   const { title, date, source, url, content, image, attributes } = publication;
 
-
   const tags = [];
   if (attributes?.isTechNews) tags.push('Технические новости');
   if (attributes?.isAnnouncement) tags.push('Анонсы и события');
@@ -26,11 +25,11 @@ function PublicationCard({ publication }) {
         ))}
       </div>
       {image && <img src={image} alt="" className="publication-card__image" />}
-        <div className="publication-card__content">
-          {content.split('\n').filter(Boolean).map((paragraph, idx) =>
-            <p key={idx}>{paragraph}</p>
-          )}
-       </div>
+      <div className="publication-card__content">
+        {content.split('\n').filter(Boolean).map((paragraph, idx) =>
+          <p key={idx}>{paragraph}</p>
+        )}
+      </div>
       <div className="publication-card__footer">
         <a href={url} target="_blank" rel="noopener noreferrer" className="publication-card__btn">
           Читать в источнике

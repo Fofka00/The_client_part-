@@ -7,6 +7,8 @@ import './SummaryPage.css';
 import PublicationsList from '../components/PublicationsList';
 import imgDarts from '../Img/Group 1171274267.svg';
 import { Link } from 'react-router-dom';
+import { getPublicationIds } from '../mockApi';
+
 
 
 function SummaryPage({ user, loading, onLogout, limits, loadingLimits }) {
@@ -30,17 +32,8 @@ function SummaryPage({ user, loading, onLogout, limits, loadingLimits }) {
       const fetchPublicationIds = async () => {
         setIdsLoading(true);
         try {
-          const response = await fetch('http://localhost:3001/objectsearch', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(searchParams)
-          });
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error('Ошибка запроса публикаций: ' + errorText);
-          }
-          const data = await response.json();
-          setPublicationIds(data.publicationIds || data);
+          const data = await getPublicationIds();
+          setPublicationIds(data.publicationIds);
         } catch (err) {
           alert('Ошибка при получении публикаций: ' + err.message);
         } finally {
