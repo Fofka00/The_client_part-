@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SearchPage from './pages/SearchPage';
 import SummaryPage from './pages/SummaryPage';
+import { getLimits } from './mockApi';
 
 function App() {
   const [limits, setLimits] = useState(null);
@@ -11,14 +12,16 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ДОБАВЬТЕ ЭТОТ useEffect:
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     const expire = localStorage.getItem('expire');
     if (token && expire && new Date(expire) > new Date()) {
-      setUser({ name: 'Алексей А.', currentTariff: '...', avatar: '...' });
+      setUser({ name: 'Алексей А.', currentTariff: 'Beginner', avatar: '...' });
     }
     setLoading(false);
   }, []);
+
   useEffect(() => {
     if (!user) {
       setLimits(null);
@@ -26,8 +29,7 @@ function App() {
       return;
     }
     setLoadingLimits(true);
-    fetch('http://localhost:3001/account/limits')
-      .then(res => res.json())
+    getLimits()
       .then(data => setLimits(data))
       .catch(() => setLimits(null))
       .finally(() => setLoadingLimits(false));

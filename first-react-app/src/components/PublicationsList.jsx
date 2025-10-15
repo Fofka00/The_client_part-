@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PublicationCard from './PublicationCard';
 import './PublicationsList.css';
+import { getPublications } from '../mockApi';
 
 const PAGE_SIZE = 2;
 
@@ -52,13 +53,8 @@ function PublicationsList({ publicationIds }) {
         return;
       }
       try {
-        const response = await fetch('http://localhost:3001/documents', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ids: idsToLoad }),
-        });
-        const data = await response.json();
-        setPublications(prev => [...prev, ...data]);
+        const data = await getPublications({ ids: idsToLoad });
+        setPublications(data);
       } catch (err) {
         alert('Ошибка: ' + err.message);
       } finally {

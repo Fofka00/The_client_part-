@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import './SearchPage.css'
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { getHistograms } from '../mockApi';
 
 function validateInn(inn) {
   return /^\d{10}$|^\d{12}$/.test(inn);
@@ -81,23 +82,22 @@ function SearchPage({ user, loading, onLogout, limits, loadingLimits }) {
           dateStart,
           dateEnd
         };
-        const response = await fetch('http://localhost:3001/objectsearch/histograms', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-          
-        });
-        if (!response.ok) throw new Error('Ошибка запроса');
-        const data = await response.json();
-        setSummary(data);
-        navigate('/summary', { state: { summary: data, searchParams: body } });
-      } catch (err) {
-        alert('Ошибка при поиске: ' + err.message);
-      } finally {
-        setLoadingSummary(false);
+        try {
+          const data = await getHistograms(body);
+          setSummary(data);
+          navigate('/summary', { state: { summary: data, searchParams: body } });
+        } catch (err) {
+          alert('Ошибка при поиске: ' + err.message);
+        } finally {
+          setLoadingSummary(false);
+        }
+        } catch (err) {
+          alert('Ошибка при поиске: ' + err.message);
+        } finally {
+          setLoadingSummary(false);
+        }
       }
-    }
-  };
+    };
   
 
   const isValid = Object.keys(validate()).length === 0;

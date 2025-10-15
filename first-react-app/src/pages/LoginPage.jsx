@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import KeyImg from '../Img/Characters.svg';   
 import LockImg from '../Img/Group 1171274237.svg'; 
 import Header from '../components/Header';
-import Footer from '../components/Footer'; 
+import Footer from '../components/Footer';
+import { login as mockLogin } from '../mockApi';
 
 function LoginPage({ onLogin }) {
   const [login, setLogin] = useState('');
@@ -20,23 +21,7 @@ const handleSubmit = async (e) => {
   setLoading(true);
   setError('');
   try {
-    const response = await fetch('http://localhost:3001/account/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ login, password }),
-    });
-
-    if (!response.ok) {
-      if (response.status === 401) {
-        setError('Неверный логин или пароль');
-      } else {
-        setError('Ошибка авторизации');
-      }
-      setLoading(false);
-      return;
-    }
-
-    const data = await response.json();
+    const data = await mockLogin({ login, password });
     if (data.accessToken) {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('expire', data.expire);
@@ -44,7 +29,7 @@ const handleSubmit = async (e) => {
     onLogin(data.user);
     navigate('/');
   } catch (err) {
-    setError('Сервер недоступен, попробуйте позже');
+    setError(err.message || 'Сервер недоступен, попробуйте позже');
   } finally {
     setLoading(false);
   }
