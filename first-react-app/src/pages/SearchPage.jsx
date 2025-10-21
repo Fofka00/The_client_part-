@@ -22,7 +22,7 @@ function SearchPage({ user, loading, onLogout, limits, loadingLimits }) {
   const [maxFullness, setMaxFullness] = useState(false);
   const [inBusinessNews, setInBusinessNews] = useState(false);
   const [onlyMainRole, setOnlyMainRole] = useState(false);
-  const [tonality, setTonality] = useState('');
+  const [tonality, setTonality] = useState('Любая');
   const [onlyWithRisk, setOnlyWithRisk] = useState(false);
   const [includeTechNews, setIncludeTechNews] = useState(false);
   const [includeAnnouncements, setIncludeAnnouncements] = useState(false);
@@ -51,7 +51,7 @@ function SearchPage({ user, loading, onLogout, limits, loadingLimits }) {
     const newErrors = {};
     if (!validateInn(inn)) newErrors.inn = 'Введите корректный ИНН (10 или 12 цифр)';
     if (!tonality) newErrors.tonality = 'Выберите тональность';
-    if (!limit || isNaN(limit) || limit < 1 || limit > 1000) newErrors.limit = 'От 1 до 1000';
+    if (!limit || isNaN(limit) || limit < 1 || limit > 10) newErrors.limit = 'От 1 до 1000';
     if (!dateStart) newErrors.dateStart = 'Укажите дату начала';
     if (!dateEnd) newErrors.dateEnd = 'Укажите дату конца';
     if (dateStart && isFuture(dateStart)) newErrors.dateStart = 'Дата не может быть в будущем';
@@ -131,8 +131,23 @@ function SearchPage({ user, loading, onLogout, limits, loadingLimits }) {
                       </select>
                     </label>
                     <label>
-                      <p>Количество документов в выдаче*</p>
-                      <input type="number" placeholder="От 1 до 1000"   value={limit} onChange={e => setLimit(e.target.value)} />
+                    <p>Количество документов в выдаче*</p>
+                      <input
+                        type="number"
+                        placeholder="От 1 до 10"
+                        min={1}
+                        max={10}
+                        value={limit}
+                        onChange={e => {
+                          let val = e.target.value.replace(/^0+/, '');
+                          if (val === '') {
+                            setLimit('');
+                          } else {
+                            let num = Math.max(1, Math.min(10, Number(val)));
+                            setLimit(num);
+                          }
+                        }}
+                      />
                     </label>
                     <label>
                       <p>Диапазон поиска*</p>

@@ -6,10 +6,7 @@ import Footer from '../components/Footer';
 import './SummaryPage.css';
 import PublicationsList from '../components/PublicationsList';
 import imgDarts from '../Img/Group 1171274267.svg';
-import { Link } from 'react-router-dom';
 import { getPublicationIds } from '../mockApi';
-
-
 
 function SummaryPage({ user, loading, onLogout, limits, loadingLimits }) {
   const location = useLocation();
@@ -20,12 +17,13 @@ function SummaryPage({ user, loading, onLogout, limits, loadingLimits }) {
   const [publicationIds, setPublicationIds] = useState([]);
   const [idsLoading, setIdsLoading] = useState(false);
 
+  const limit = Number(searchParams?.limit) || 10;
+
   useEffect(() => {
     if (!loading && !user) {
       navigate('/');
     }
   }, [user, loading, navigate]);
-
 
   useEffect(() => {
     if (summary && searchParams) {
@@ -41,7 +39,7 @@ function SummaryPage({ user, loading, onLogout, limits, loadingLimits }) {
         }
       };
       fetchPublicationIds();
-   }
+    }
   }, [summary, searchParams]);
 
   if (loading) return <div>Загрузка...</div>;
@@ -55,28 +53,30 @@ function SummaryPage({ user, loading, onLogout, limits, loadingLimits }) {
   }
 
   return (
-  <>
-    <Header user={user} onLogout={onLogout} limits={limits} loadingLimits={loadingLimits} />
-    <section className='summaryMain'>
-      <div className='summaryHead'>
-        <div className='summaryHead__content'><h1>Ищем. Скоро будут результаты</h1>
-          <p>Поиск может занять некоторое время, просим сохранять терпение.</p></div>
-        <div><img src={imgDarts} alt="" /></div>
-      </div>
-      <SummaryCarousel summary={summary} />
-      <h2 style={{fontWeight: '900'}}>СПИСОК ДОКУМЕНТОВ</h2>
-      {idsLoading && <div>Загрузка публикаций...</div>}
+    <>
+      <Header user={user} onLogout={onLogout} limits={limits} loadingLimits={loadingLimits} />
+      <section className='summaryMain'>
+        <div className='summaryHead'>
+          <div className='summaryHead__content'>
+            <h1>Ищем. Скоро будут результаты</h1>
+            <p>Поиск может занять некоторое время, просим сохранять терпение.</p>
+          </div>
+          <div><img src={imgDarts} alt="" /></div>
+        </div>
+        <SummaryCarousel summary={summary} />
+        <h2 style={{ fontWeight: '900' }}>СПИСОК ДОКУМЕНТОВ</h2>
+        {idsLoading && <div>Загрузка публикаций...</div>}
 
-      {!idsLoading && publicationIds.length > 0 && (
-        <PublicationsList publicationIds={publicationIds} />
-      )}
+        {!idsLoading && publicationIds.length > 0 && (
+          <PublicationsList publicationIds={publicationIds} limit={limit} />
+        )}
 
-      {!idsLoading && publicationIds.length === 0 && (
-        <div>Публикации не найдены.</div>
-      )}
-    </section>
-    <Footer />
-  </>
+        {!idsLoading && publicationIds.length === 0 && (
+          <div>Публикации не найдены.</div>
+        )}
+      </section>
+      <Footer />
+    </>
   );
 }
 

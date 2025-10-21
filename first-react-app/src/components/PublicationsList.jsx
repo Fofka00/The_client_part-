@@ -5,7 +5,8 @@ import { getPublications } from '../mockApi';
 
 const PAGE_SIZE = 2;
 
-function PublicationsList({ publicationIds }) {
+function PublicationsList({ publicationIds, limit = 10 }) {
+  const PAGE_SIZE = limit;
   const [publications, setPublications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ function PublicationsList({ publicationIds }) {
         const idsToLoad = publicationIds.slice(0, PAGE_SIZE);
         try {
           const data = await getPublications({ ids: idsToLoad });
-          setPublications(data); // <-- только set, не добавление!
+          setPublications(data);
         } catch (err) {
           alert('Ошибка: ' + err.message);
         } finally {
@@ -41,7 +42,7 @@ function PublicationsList({ publicationIds }) {
       }
       try {
         const data = await getPublications({ ids: idsToLoad });
-        setPublications(prev => [...prev, ...data]); // <-- добавление!
+        setPublications(prev => [...prev, ...data]);
       } catch (err) {
         alert('Ошибка: ' + err.message);
       } finally {
@@ -63,9 +64,9 @@ function PublicationsList({ publicationIds }) {
         ))}
       </div>
       {loading && <div>Загружаем публикации...</div>}
-      {publications.length < 10 && !loading && (
+      {publications.length < Math.min(publicationIds.length, limit) && !loading && (
         <button onClick={handleShowMore} className="show-more-btn">
-          Показать больше
+         Показать больше
         </button>
       )}
     </div>
