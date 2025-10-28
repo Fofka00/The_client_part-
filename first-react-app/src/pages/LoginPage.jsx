@@ -27,7 +27,7 @@ const handleSubmit = async (e) => {
       localStorage.setItem('expire', data.expire);
       const user = { name: 'Алексей А.', currentTariff: 'Beginner', avatar: '...' };
       localStorage.setItem('user', JSON.stringify(user));
-      onLogin(user); // Это setUser в App.js
+      onLogin(user); 
     }
     navigate('/');
   } catch (err) {

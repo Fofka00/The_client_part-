@@ -69,6 +69,5 @@ export async function getPublications(ids, token) {
   });
   if (!res.ok) throw new Error('Ошибка получения публикаций');
   const data = await res.json();
-  // data — массив объектов {ok: {...}} или {fail: {...}}
   return data.filter(item => item.ok).map(item => item.ok);
 }

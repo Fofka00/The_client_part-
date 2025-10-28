@@ -134,7 +134,6 @@ export function getLimits() {
 }
 
 export function getHistograms({ dateStart, dateEnd }) {
-  // Генерируем mock-данные по датам
   const periods = [];
   let current = new Date(dateStart);
   const end = new Date(dateEnd);

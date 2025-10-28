@@ -17,7 +17,6 @@ function App() {
   const token = localStorage.getItem('accessToken');
   const expire = localStorage.getItem('expire');
   if (token && expire && new Date(expire) > new Date()) {
-    // Жёстко задаём user
     setUser({ name: 'Алексей А.', currentTariff: 'Beginner', avatar: '...' });
   } else {
     setUser(null);
