@@ -10,7 +10,6 @@ function PublicationsList({ publicationIds, limit = 10 }) {
   const [shownCount, setShownCount] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(false);
 
-  // Считаем, сколько всего карточек можно показать (не больше limit и не больше publicationIds.length)
   const maxToShow = Math.min(publicationIds.length, limit);
 
   useEffect(() => {
@@ -31,12 +30,10 @@ function PublicationsList({ publicationIds, limit = 10 }) {
       };
       fetchInitial();
     }
-    // eslint-disable-next-line
   }, [publicationIds, limit]);
 
   const handleShowMore = async () => {
     setLoading(true);
-    // Считаем, сколько ещё можно показать
     const remaining = maxToShow - publications.length;
     const toLoad = Math.min(PAGE_SIZE, remaining);
     const nextIds = publicationIds.slice(publications.length, publications.length + toLoad);
