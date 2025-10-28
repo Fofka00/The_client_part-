@@ -35,12 +35,12 @@ function SearchPage({ user, loading, onLogout, limits, loadingLimits }) {
   const [loadingSummary, setLoadingSummary] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && user === null) {
       navigate('/');
     }
   }, [user, loading, navigate]);
 
-  if (loading) {
+  if (loading || user === undefined) {
     return <div>Загрузка...</div>;
   }
 

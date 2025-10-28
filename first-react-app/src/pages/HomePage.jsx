@@ -6,8 +6,10 @@ import Tariffs from '../components/Tariffs';
 import '../components/HomePage.css';
 import Ilustration from '../Img/Group 13.svg'
 import Ilustration1 from '../Img/Group 14.svg'
+import { useNavigate } from 'react-router-dom';
 
 function HomePage({ user, handleLogout, limits, loadingLimits }) {
+  const navigate = useNavigate();
   return (
     <>
       <Header user={user} onLogout={handleLogout} limits={limits} loadingLimits={loadingLimits} />
@@ -19,7 +21,8 @@ function HomePage({ user, handleLogout, limits, loadingLimits }) {
             {user && (
               <button
                 className="hero__button"
-                onClick={() => window.location.href = '/search'}
+                onClick={() => navigate('/search')}
+                type="button" 
               >
                 Запросить данные
               </button>

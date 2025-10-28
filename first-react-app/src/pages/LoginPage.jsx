@@ -25,8 +25,10 @@ const handleSubmit = async (e) => {
     if (data.accessToken) {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('expire', data.expire);
+      const user = { name: 'Алексей А.', currentTariff: 'Beginner', avatar: '...' };
+      localStorage.setItem('user', JSON.stringify(user));
+      onLogin(user); // Это setUser в App.js
     }
-    onLogin(data.user);
     navigate('/');
   } catch (err) {
     setError(err.message || 'Сервер недоступен, попробуйте позже');

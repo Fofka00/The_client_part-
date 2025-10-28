@@ -113,22 +113,18 @@ Data Scientist — это специалист, который работает 
     attributes: { isTechNews: false, isAnnouncement: false, isDigest: true, wordCount: 1900 }
   }
 ];
-// --- MOCK API FUNCTIONS ---
 
-export function login({ login, password }) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (login === 'myDiploma' && password === 'willSucceed4Sure') {
-        resolve({
-          accessToken: 'mock-token',
-          expire: new Date(Date.now() + 3600 * 1000).toISOString(),
-          user: { name: 'Алексей А.', currentTariff: 'Beginner', avatar: '...' }
-        });
-      } else {
-        reject({ message: 'Неверный логин или пароль' });
-      }
-    }, 500);
+export async function login({ login, password }) {
+  const res = await fetch('https://gateway.scan-interfax.ru/api/v1/account/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ login, password })
   });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || 'Ошибка авторизации');
+  }
+  return await res.json();
 }
 
 export function getLimits() {
