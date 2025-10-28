@@ -6,18 +6,20 @@ import { getPublications } from '../mockApi';
 const PAGE_SIZE = 2;
 
 function PublicationsList({ publicationIds, limit = 10 }) {
-  const PAGE_SIZE = limit;
   const [publications, setPublications] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [shownCount, setShownCount] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(false);
+
+  // Считаем, сколько всего карточек можно показать (не больше limit и не больше publicationIds.length)
+  const maxToShow = Math.min(publicationIds.length, limit);
 
   useEffect(() => {
     setPublications([]);
-    setCurrentPage(1);
+    setShownCount(PAGE_SIZE);
     if (publicationIds.length > 0) {
-      const fetchFirstPage = async () => {
+      const fetchInitial = async () => {
         setLoading(true);
-        const idsToLoad = publicationIds.slice(0, PAGE_SIZE);
+        const idsToLoad = publicationIds.slice(0, Math.min(PAGE_SIZE, maxToShow));
         try {
           const data = await getPublications({ ids: idsToLoad });
           setPublications(data);
@@ -27,33 +29,26 @@ function PublicationsList({ publicationIds, limit = 10 }) {
           setLoading(false);
         }
       };
-      fetchFirstPage();
+      fetchInitial();
     }
-  }, [publicationIds]);
+    // eslint-disable-next-line
+  }, [publicationIds, limit]);
 
-  useEffect(() => {
-    if (currentPage === 1) return;
-    const fetchPublications = async () => {
-      setLoading(true);
-      const idsToLoad = publicationIds.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-      if (idsToLoad.length === 0) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const data = await getPublications({ ids: idsToLoad });
-        setPublications(prev => [...prev, ...data]);
-      } catch (err) {
-        alert('Ошибка: ' + err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPublications();
-  }, [currentPage, publicationIds]);
-
-  const handleShowMore = () => {
-    setCurrentPage(prev => prev + 1);
+  const handleShowMore = async () => {
+    setLoading(true);
+    // Считаем, сколько ещё можно показать
+    const remaining = maxToShow - publications.length;
+    const toLoad = Math.min(PAGE_SIZE, remaining);
+    const nextIds = publicationIds.slice(publications.length, publications.length + toLoad);
+    try {
+      const data = await getPublications({ ids: nextIds });
+      setPublications(prev => [...prev, ...data]);
+      setShownCount(prev => prev + toLoad);
+    } catch (err) {
+      alert('Ошибка: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,7 +59,7 @@ function PublicationsList({ publicationIds, limit = 10 }) {
         ))}
       </div>
       {loading && <div>Загружаем публикации...</div>}
-      {publications.length < Math.min(publicationIds.length, limit) && !loading && (
+      {publications.length < maxToShow && !loading && (
         <button onClick={handleShowMore} className="show-more-btn">
          Показать больше
         </button>
